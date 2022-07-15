@@ -16,7 +16,7 @@ To fine configure your MongoDB BI Connector container installation you can speci
 
 ## Some usage examples
 
-Docker-compose file without authentication
+Docker-compose file without authentication nor special configuration
 
 ```docker
 version: "3"
@@ -44,4 +44,51 @@ services:
       MONGODB_URI: "mongodb://mongodb:27017/?connect=direct"
       MONGODB_USERNAME: testuser
       MONGODB_PASSWORD: testpassword
+      MONGODB_AUTHDB: admin
+```
+
+Kubernetes with config on ConfigMap
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mongodb-bi-connector
+spec:
+  containers:
+  - name: mongodb-bi-connector
+    image: albertomxm/mongodb-bi-connector:latest
+    env:
+      - name: CONFIG_FILE_PATH
+        value: /etc/mongosqld.conf
+    ports:
+      - containerPort: 3307
+    volumeMounts:
+      - mountPath: /etc/mongosqld.conf
+        name: configuration
+        subPath: mongosqld.conf
+  volumes:
+    - name: configuration
+      configMap:
+        name: mongosqld-conf
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mongosqld-conf
+data:
+  mongosqld.conf: |
+    systemLog:
+      path: /var/log/mongosqld/mongosqld.log
+
+    security:
+      enabled: true
+
+    mongodb:
+      net:
+        uri: "mongodb://mongodb:27017/?connect=direct"
+
+    net:
+      bindIp: 0.0.0.0
+      port: 3307
 ```
