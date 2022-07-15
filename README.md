@@ -12,7 +12,7 @@ To leverage authentication directly without entering in detailed configuration w
 
 ### Configuration
 
-To fine configure your MongoDB BI Connector container installation you can specify a configuration file using the CONFIGFILE_PATH to specify the full path where this file will be found or mounted.
+To fine configure your MongoDB BI Connector container installation you can specify a configuration file using the CONFIG_FILE_PATH to specify the full path where this file will be found or mounted.
 
 ## Some usage examples
 

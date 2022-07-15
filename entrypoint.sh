@@ -10,9 +10,11 @@ elif [[ -n $MONGODB_USERNAME || -n $MONGODB_PASSWORD || -n $MONGODB_AUTHDB ]]; t
 elif [[ -n $CONFIG_FILE_PATH ]]; then
     echo "CONFIG_FILE_PATH is set to $CONFIG_FILE_PATH"
     echo "Launcing monogosqld using the configfile provided"
-    exec mongosqld --config-file ${CONFIG_FILE_PATH}
+    exec mongosqld --config ${CONFIG_FILE_PATH}
 fi
 
+echo "Logs will be available at /var/log/mongosqld/mongosqld.log"
+
 while true; do
-    tail -f /var/log/mongosqld/mongosqld.log
+    sleep 60
 done
